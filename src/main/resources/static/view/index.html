@@ -1,0 +1,99 @@
+<html>
+<head>
+  <title>首页</title>
+  <meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=320,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/css/base.css?v=10">
+<script type="application/javascript" src="/lib/fastclick.js"></script>
+<script>
+  
+  if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+      FastClick.attach(document.body);
+    }, false);
+    window.addEventListener('resize', function(){
+      var deviceWidth = document.documentElement.clientWidth;
+      if(deviceWidth > 750) deviceWidth = 750;
+      document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+    });
+  }
+  var deviceWidth = document.documentElement.clientWidth;
+  if(deviceWidth > 750) deviceWidth = 750;
+  document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+</script>
+  <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
+  <div class="container full">
+    <script type="text/template" id="main-tpl">
+      <div id="top-bar"><a id="btn-profile" class="hover fbox-cc" href="javascript:;"><i class="b-icon i3"></i></a></div>
+      <div id="menu-box" class="fsize-16 clearfix">
+        <a class="menu-item hover" href="/view/member.html">
+          <span class="menu-ico fbox-cc"><i class="m-ico i1"></i></span>
+          <p>我的团队</p>
+        </a>
+        <a class="menu-item hover" href="/view/statistics.html">
+          <span class="menu-ico fbox-cc"><i class="m-ico i2"></i></span>
+          <p>数据统计</p>
+        </a>
+      </div>
+      <div id="profile-box" class="hide">
+        <div id="profile-content">
+          <div id="profile-bg"><i></i></div>
+          <div id="profile-main">
+            <div id="profile-info" class="fbox-ac">
+              <div class="avatar"><img src="${portrait}" onload="resetImg(this)" onerror="setDefaultImg(this, '/img/default_avatar_1.png')"></div>
+              <div>
+                <p class="nickname fsize-16">${userName}</p>
+                <p class="phone fsize-14">${userPn}</p>
+              </div>
+            </div>
+            <div id="profile-permission" class="fsize-14">
+              {@if !power || power == 1}
+              <a class="inhover" href="/view/permission.html"><span>权限</span></a>
+              {@/if}
+            </div>
+            <div id="profile-share" class="fbox fsize-14">
+              {@if userType == 10 || userType == 30}
+              <a class="inhover fbox-f1" href="/view/agent_invited.html"><span>邀请代理</span></a>
+              {@/if}
+              <a class="inhover fbox-f1" href="/view/car_invited.html"><span>邀请客户</span></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+  </div>
+  <script src="/lib/zepto.js"></script>
+<script src="/lib/juicer.js"></script>
+<script src="/js/common.js?v=1"></script>
+<script>
+  if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+    handleFontSize();
+  } else {
+    if (document.addEventListener) {
+      document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+    } else if (document.attachEvent) {
+      document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+      document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+    }
+  }
+
+  function handleFontSize() {
+    // 设置网页字体为默认大小
+    WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    // 重写设置网页字体大小的事件
+    WeixinJSBridge.on('menu:setfont', function() {
+      WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    });
+  }
+</script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script src="/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    druid:
+      driver-class-name: com.mysql.jdbc.Driver
+      username: zccbh
+      password: Zccbh123!@#
+      url: jdbc:mysql://106.14.223.21:3306/chevhuzhutest?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&serverTimezone=UTC
+
+weixin:
+  appid: wxb772ab55ccaa65c2
+  appsecret: db565bb02ad060cdc72b198ddf0748ed
+  token: chevdian
+server:
+  port: 80
+aliyun:
+  accessKeyId: LTAIocJnw9YCKcBy
+  accessKeySecret: AW2mZEPHpLcCLOgskdgZKTfeD5DCcq
+  endpoint: http://oss-cn-beijing.aliyuncs.com
+  bucketName: chevhuzhu
+  smsCodeCount: 20 # 同一个手机号每天获取验证码次数
+  smsCodeTime: 5  # 短信验证码有效时间(分钟)
+debug: false
+chevhuzhu:
+  url: http://test.chevhuzhu.com
+  rechargeNum: 5  # 一次最大充值车辆数
+swagger:
+  enabled: true

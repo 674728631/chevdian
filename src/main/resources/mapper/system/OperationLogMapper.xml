@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvd.chevdian.mapper.system.OperationLogMapper">
+
+    <select id="getLog" resultType="OperationLogDto">
+        SELECT * FROM cvd_log ORDER BY id DESC
+    </select>
+
+    <insert id="saveLog" parameterType="OperationLogDto" useGeneratedKeys="true" keyProperty="id">
+        insert into cvd_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="logType != null">logType,</if>
+            <if test="logName != null">logName,</if>
+            <if test="os != null">os,</if>
+            <if test="browser != null">browser,</if>
+            <if test="ip != null">ip,</if>
+            <if test="mac != null">mac,</if>
+            <if test="requestData != null">requestData,</if>
+            <if test="requestUrl != null">requestUrl,</if>
+            <if test="responseData != null">responseData,</if>
+            <if test="className != null">className,</if>
+            <if test="methodName != null">methodName,</if>
+            <if test="startTime != null">startTime,</if>
+            <if test="endTime != null">endTime,</if>
+            <if test="excuteTime != null">excuteTime,</if>
+            <if test="creator != null">creator,</if>
+            <if test="creatorId != null">creatorId,</if>
+            <if test="createdTime != null">createdTime,</if>
+            <if test="exceptionMessage != null">exceptionMessage,</if>
+            <if test="exceptionCause != null">exceptionCause,</if>
+            <if test="exceptionSimpleName != null">exceptionSimpleName,</if>
+            <if test="exceptionStack != null">exceptionStack,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="logType != null">#{logType},</if>
+            <if test="logName != null">#{logName},</if>
+            <if test="os != null">#{os},</if>
+            <if test="browser != null">#{browser},</if>
+            <if test="ip != null">#{ip},</if>
+            <if test="mac != null">#{mac},</if>
+            <if test="requestData != null">#{requestData},</if>
+            <if test="requestUrl != null">#{requestUrl},</if>
+            <if test="responseData != null">#{responseData},</if>
+            <if test="className != null">#{className},</if>
+            <if test="methodName != null">#{methodName},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="excuteTime != null">#{excuteTime},</if>
+            <if test="creator != null">#{creator},</if>
+            <if test="creatorId != null">#{creatorId},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="exceptionMessage != null">#{exceptionMessage},</if>
+            <if test="exceptionCause != null">#{exceptionCause},</if>
+            <if test="exceptionSimpleName != null">#{exceptionSimpleName},</if>
+            <if test="exceptionStack != null">#{exceptionStack},</if>
+        </trim>
+    </insert>
+</mapper>

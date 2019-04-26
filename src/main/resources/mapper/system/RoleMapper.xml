@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvd.chevdian.mapper.system.RoleMapper">
+    <insert id="saveSingle" parameterType="Map" useGeneratedKeys="true" keyProperty="id">
+        insert into cvd_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleName != null and roleName != ''">role_name,</if>
+            <if test="roleGroup != null and roleGroup != ''">role_group,</if>
+            <if test="roleDesc != null and roleDesc != ''">role_desc,</if>
+            <if test="createAt != null">createAt,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleName != null and roleName != ''">#{roleName,jdbcType=VARCHAR},</if>
+            <if test="roleGroup != null and roleGroup != ''">#{roleGroup,jdbcType=VARCHAR},</if>
+            <if test="roleDesc != null and roleDesc != ''">#{roleDesc,jdbcType=VARCHAR},</if>
+            <if test="createAt != null">#{createAt,jdbcType=DATE},</if>
+        </trim>
+    </insert>
+
+    <update id="updateModel" parameterType="Map">
+        UPDATE cvd_role
+        <set>
+            <if test="roleName != null and roleName != ''">#{roleName,jdbcType=VARCHAR},</if>
+            <if test="roleGroup != null and roleGroup != ''">#{roleGroup,jdbcType=VARCHAR},</if>
+            <if test="roleDesc != null and roleDesc != ''">#{roleDesc,jdbcType=VARCHAR},</if>
+            <if test="createAt != null">#{createAt,jdbcType=DATE},</if>
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <sql id="ALL_COLUM">
+        id,role_name roleName,role_group roleGroup,role_desc roleDesc,create_at createAt
+    </sql>
+
+    <select id="findSingle" parameterType="integer" resultType="Role">
+        SELECT <include refid="ALL_COLUM"/> FROM cvd_role WHERE id = #{id}
+    </select>
+
+    <select id="findMore" resultType="Role">
+        SELECT <include refid="ALL_COLUM"/> FROM cvd_role
+    </select>
+
+</mapper>

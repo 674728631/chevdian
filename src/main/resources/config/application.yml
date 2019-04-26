@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: @pom.artifactId@
+  profiles:
+    active: dev
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+mybatis:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    call-setters-on-nulls: true
+  type-aliases-package: com.cvd.chevdian.bean

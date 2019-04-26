@@ -1,0 +1,120 @@
+<html>
+<head>
+  <title>角色</title>
+  <meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=320,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/css/base.css?v=10">
+<script type="application/javascript" src="/lib/fastclick.js"></script>
+<script>
+  
+  if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+      FastClick.attach(document.body);
+    }, false);
+    window.addEventListener('resize', function(){
+      var deviceWidth = document.documentElement.clientWidth;
+      if(deviceWidth > 750) deviceWidth = 750;
+      document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+    });
+  }
+  var deviceWidth = document.documentElement.clientWidth;
+  if(deviceWidth > 750) deviceWidth = 750;
+  document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+</script>
+  <link rel="stylesheet" href="/css/datapicker2.css">
+  <link rel="stylesheet" href="/css/permission.css">
+</head>
+<body>
+  <div class="container full">
+    <script type="text/template" id="main-tpl">
+      <div id="list-box">
+        {@include '#list-tpl', _}
+      </div>
+      <div class="btn-wrap">
+        <div class="btn-box">
+          <a id="btn-add" class="btn strong hover" href="javascript:;">创建角色</a>
+        </div>
+      </div>
+    </script>
+    <script type="text/template" id="list-tpl">
+      {@each list as it}
+      <a class="permission-item hover fsize-16" href="javascript:;" data-id="${it.id}">
+        <div class="info fbox-ac">
+          <p>角色名：</p>
+          <p class="role-name p2 fsize-14">${it.name}</p>
+        </div>
+        <div class="info fbox-ac">
+          <p>权限类型：</p>
+          <p class="role-type p2 fsize-14">${it.roleId|juicer_getRoleName}</p>
+        </div>
+      </a>
+      {@/each}
+    </script>
+  </div>
+  <script type="text/template" id="add-tpl">
+    <div class="item fbox-ac fsize-16">
+      <p>角色名称</p>
+      <input id="role-name" class="fsize-16 fbox-f1 tr" type="text" maxlength="50" placeholder="请输入角色名称" value="{@if name}${name}{@/if}">
+    </div>
+    <p class="err-txt fsize-12 err-txt-role-name"></p>
+    <div class="item3 fbox-ac fsize-16">
+      <p>角色类型</p>
+      <input id="add-input-type" class="fsize-16 fbox-f1 tr hover" type="text" maxlength="50" placeholder="请选择角色类型" value="{@if roleId}${roleId|juicer_getRoleName}{@/if}" readonly>
+      <span class="arr2 arr-bottom"></span>
+    </div>
+    <p class="err-txt fsize-12 err-txt-role-type"></p>
+    <div class="item3 fbox-ac fsize-16"><p>选择权限：</p></div>
+    <div class="add-per item clearfix">
+      <a class="item2 hover fsize-16 {@if power == 1}active{@/if}" href="javascript:;">权限</a>
+    </div>
+  </script>
+  <script type="text/template" id="detail-tpl">
+    <div class="item fbox-ac fsize-16">
+      <p>角色名称</p>
+      <p class="p3 fbox-f1 tr">{@if name}${name}{@else}——{@/if}</p>
+    </div>
+    <p class="err-txt fsize-12 err-txt-role-name"></p>
+    <div class="item3 fbox-ac fsize-16">
+      <p>角色类型</p>
+      <p class="p3 fbox-f1 tr">${roleId|juicer_getRoleName}</p>
+    </div>
+    <p class="err-txt fsize-12 err-txt-role-type"></p>
+    <div class="item3 fbox-ac fsize-16"><p>选择权限：</p></div>
+    <div class="add-per item clearfix">
+      <span class="item2 fsize-16 {@if power == 1}active{@/if}">权限</span>
+    </div>
+  </script>
+  <script src="/lib/zepto.js"></script>
+<script src="/lib/juicer.js"></script>
+<script src="/js/common.js?v=1"></script>
+<script>
+  if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+    handleFontSize();
+  } else {
+    if (document.addEventListener) {
+      document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+    } else if (document.attachEvent) {
+      document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+      document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+    }
+  }
+
+  function handleFontSize() {
+    // 设置网页字体为默认大小
+    WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    // 重写设置网页字体大小的事件
+    WeixinJSBridge.on('menu:setfont', function() {
+      WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    });
+  }
+</script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script src="/lib/datapicker2.js"></script>
+  <script src="/js/permission.js"></script>
+</body>
+</html>

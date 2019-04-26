@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvd.chevdian.mapper.CarMapper">
+
+    <select id="getCarById" resultType="com.cvd.chevdian.bean.vo.Car">
+        SELECT
+            cc.id carId,
+            cc.licensePlateNumber,
+            cc.customerId,
+            cuc.customerPN,
+            cuc.openId,
+            ifnull( cc.amtCooperation, 0 ) amtCooperation,
+            cc.`status`,
+            cc.nameCarOwner,
+	        cc.cityId,
+            cc.typeGuarantee,
+            cc.timeEnd,
+            cc.timeBegin,
+            cuc.createAt
+        FROM
+            cbh_car cc,
+            cbh_user_customer cuc
+        WHERE
+            cc.customerId = cuc.id
+            AND cc.id = #{carId}
+        ORDER BY cc.id DESC
+    </select>
+
+    <select id="getAllUserByShopId" resultType="com.cvd.chevdian.bean.vo.Car">
+        SELECT
+            cc.id carId,
+            cc.licensePlateNumber,
+            cc.customerId,
+            cuc.customerPN,
+            cuc.openId,
+            ifnull( cc.amtCooperation, 0 ) amtCooperation,
+            cc.`status`,
+            cc.nameCarOwner,
+	        cc.cityId,
+            cc.typeGuarantee,
+	        cuc.createAt
+        FROM
+            cbh_car cc,
+            middle_customer_maintenanceshop mcm,
+            cbh_user_customer cuc
+        WHERE
+            mcm.customerId = cc.customerId
+            AND cc.customerId = cuc.id
+            AND mcm.maintenanceshopId = #{id}
+            <if test="screenVo.beginTime != null and screenVo.endTime != null">
+                AND cuc.createAt BETWEEN #{screenVo.beginTime} AND #{screenVo.endTime}
+            </if>
+            <if test="screenVo.cityId != null">
+                AND cc.cityId = #{screenVo.cityId}
+            </if>
+        ORDER BY cc.amtCooperation, cc.id DESC
+    </select>
+
+    <select id="getCarCity" parameterType="integer" resultType="com.cvd.chevdian.bean.vo.Car">
+        SELECT
+            CONCAT( ifnull( sc2.cityName, "" ), sc.cityName ) cityName,
+            sc.provinceId
+        FROM
+            cbh_car cc,
+            sys_city sc
+            LEFT JOIN sys_city sc2 ON sc.provinceId = sc2.id
+        WHERE
+            cc.cityId = sc.id
+            AND cc.id = #{carId}
+    </select>
+
+    <select id="getCarInsurance" parameterType="integer" resultType="com.cvd.chevdian.bean.vo.Car">
+        SELECT
+            cci.insuranceId,ci.insurance,cci.endTime,cci.isAutoRemind
+        FROM
+            cvd_car_insurance cci
+            LEFT JOIN cvd_insurance ci ON cci.insuranceId = ci.id
+        WHERE
+            cci.carId = #{carId}
+    </select>
+
+    <select id="getCarRecharge" parameterType="integer" resultType="com.cvd.chevdian.bean.vo.Car">
+        SELECT
+            ifnull( sum( crr.amt ), 0) rechargeAmt
+        FROM
+            cbh_record_recharge crr
+        WHERE
+            crr.carid = #{carId}
+            AND crr.`status` = 1
+            AND 3 > crr.eventType
+            AND crr.type = 1
+    </select>
+    
+    <update id="modifyCarOwner" parameterType="com.cvd.chevdian.bean.vo.Car">
+        UPDATE cbh_car
+        SET nameCarOwner = #{nameCarOwner}
+        WHERE id = #{carId}
+    </update>
+
+    <update id="modifyCarInsurance" parameterType="com.cvd.chevdian.bean.vo.Car">
+        UPDATE cvd_car_insurance
+        <set>
+          <if test="insuranceId != null">insuranceId = #{insuranceId},</if>
+          <if test="endTime != null">endTime = #{endTime},</if>
+          <if test="isAutoRemind != null">isAutoRemind = #{isAutoRemind},</if>
+        </set>
+        WHERE carId = #{carId}
+    </update>
+
+    <insert id="saveCarInsurance" useGeneratedKeys="true" parameterType="com.cvd.chevdian.bean.vo.Car">
+        INSERT INTO cvd_car_insurance
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="carId != null">carId,</if>
+            <if test="insuranceId != null">insuranceId,</if>
+            <if test="endTime != null">endTime,</if>
+            <if test="isAutoRemind != null">isAutoRemind,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="carId != null">#{carId},</if>
+            <if test="insuranceId != null">#{insuranceId},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="isAutoRemind != null">#{isAutoRemind},</if>
+        </trim>
+    </insert>
+
+    <select id="search" resultType="Car">
+        SELECT DISTINCT
+            cc.id carId,
+            cc.licensePlateNumber,
+            cuc.customerPN,
+            ifnull( cc.amtCooperation, 0 ) amtCooperation,
+            cuc.createAt
+        FROM
+            cbh_car cc,
+            cbh_user_customer cuc,
+            cvd_user_distributor cud ,
+            middle_customer_maintenanceshop mcm
+        WHERE
+            cc.customerId = cuc.id
+            AND cud.channel_id = mcm.maintenanceshopId
+            AND mcm.customerId = cuc.id
+            <if test="shopIdList != null">
+                AND cud.channel_id IN
+                <foreach collection="shopIdList" open="(" close=")" separator="," item="id">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="searchInfo !=null and searchInfo != ''">
+              AND ( cc.licensePlateNumber LIKE concat('%',#{searchInfo},'%') OR cuc.customerPN LIKE concat('%',#{searchInfo},'%') )
+            </if>
+        ORDER BY
+            cc.id DESC
+    </select>
+
+    <select id="getInvitedUserOfUser" resultType="Car">
+        SELECT
+            cic.invitedCustomerId customerId,
+            cc.licensePlateNumber,
+            cc.id carId,
+            ifnull( cc.amtCooperation, 0 ) amtCooperation,
+            cuc.customerPN,
+            cuc.createAt
+        FROM
+            cbh_invitation_customer cic,
+            cbh_car cc,
+            cbh_user_customer cuc
+        WHERE
+            cic.invitedCustomerId = cc.customerId
+            AND cc.customerId = cuc.id
+            AND cic.`status` > 0
+            <if test="customerIdList != null">
+                AND cic.customerId IN
+                <foreach collection="customerIdList" open="(" close=")" separator="," item="customerId">
+                  #{customerId}
+                </foreach>
+            </if>
+            <if test="screenVo.beginTime != null and screenVo.endTime != null">
+                AND cuc.createAt BETWEEN #{screenVo.beginTime} AND #{screenVo.endTime}
+            </if>
+            <if test="screenVo.cityId != null">
+                AND cc.cityId = #{screenVo.cityId}
+            </if>
+    </select>
+
+    <select id="getAmtByType" resultType="map">
+        SELECT
+            ifnull( sum( crr.amt ), 0 ) rechargeAmt,
+            ifnull( sum( crr.cashAmt ), 0 ) cashAmt
+        FROM
+            cbh_car cc,
+            cbh_record_recharge crr
+        WHERE
+            cc.id = crr.carId
+            AND crr.`status` = 1
+            AND crr.type = 1
+            AND crr.eventType IN
+            <foreach collection="types" open="(" close=")" separator="," item="type">
+                #{type}
+            </foreach>
+            AND cc.id IN
+            <foreach collection="carIdList" open="(" close=")" separator="," item="carId">
+                #{carId}
+            </foreach>
+            <if test="screenVo.beginTime != null and screenVo.endTime != null">
+                AND crr.timeRecharge BETWEEN #{screenVo.beginTime} AND #{screenVo.endTime}
+            </if>
+    </select>
+
+    <select id="getInsuranceList" resultType="map">
+        SELECT id,insurance FROM cvd_insurance
+    </select>
+
+    <select id="getValidRechargeCars" resultType="Car">
+        SELECT
+            cc.id carId,
+            cc.licensePlateNumber,
+            cc.customerId,
+            cuc.customerPN,
+            cuc.openId,
+            ifnull( cc.amtCooperation, 0 ) amtCooperation,
+            cc.`status`,
+            cc.nameCarOwner,
+            cc.cityId,
+            cc.amtCompensation,
+            cuc.createAt
+        FROM
+            cbh_car cc,
+            cbh_user_customer cuc,
+            middle_customer_maintenanceshop mcm
+        WHERE
+            cc.customerId = cuc.id
+            AND ( ( cc.`status` = 20 AND cc.typeGuarantee = 1 ) OR cc.`status` IN ( 1, 13, 30 ) )
+            AND cc.amtCompensation > 0
+            AND cuc.`status` = 1
+            AND ( cuc.id = mcm.customerId OR cuc.openId = mcm.openId )
+	        AND mcm.maintenanceshopId IN
+            <foreach collection="shopIdList" open="(" close=")" separator="," item="shopId">
+                #{shopId}
+            </foreach>
+	    ORDER BY cc.amtCooperation, cc.id DESC
+    </select>
+
+    <select id="getValidRechargeInvitedUser" resultType="Car">
+        SELECT
+            cic.invitedCustomerId customerId,
+            cc.licensePlateNumber,
+            cc.id carId,
+            ifnull( cc.amtCooperation, 0 ) amtCooperation,
+            cuc.customerPN,
+            cuc.createAt
+        FROM
+            cbh_invitation_customer cic,
+            cbh_car cc,
+            cbh_user_customer cuc
+        WHERE
+            cic.invitedCustomerId = cc.customerId
+            AND cc.customerId = cuc.id
+            AND cic.`status` > 0
+            AND ( ( cc.`status` = 20 AND cc.typeGuarantee = 1 ) OR cc.`status` IN ( 1, 13, 30 ) )
+            AND cc.amtCompensation > 0
+            AND cuc.`status` = 1
+            <if test="customerIdList != null">
+                AND cic.customerId IN
+                <foreach collection="customerIdList" open="(" close=")" separator="," item="customerId">
+                    #{customerId}
+                </foreach>
+            </if>
+        ORDER BY cc.amtCooperation DESC
+    </select>
+
+</mapper>

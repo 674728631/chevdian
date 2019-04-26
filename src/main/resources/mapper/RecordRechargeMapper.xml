@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvd.chevdian.mapper.RecordRechargeMapper">
+
+    <select id="selectCreatTime" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            r.createAt ctime,r.id,r.flag
+        FROM
+            cbh_record_recharge r
+        WHERE
+            r.carId = #{carId}
+            AND r.STATUS = 1
+            AND r.eventType != 3
+        ORDER BY r.createAt LIMIT 1
+    </select>
+
+    <select id="selectAmt" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            SUM( r.amt ) sum,DATE_FORMAT( min( r.createAt ), '%Y-%m-%d %T' ) minT
+        FROM
+            cbh_record_recharge r
+        WHERE
+            r.carId = #{carId}
+            AND r.STATUS = 1
+            AND r.eventType IN ( 1, 2, 7, 8, 20 )
+            AND r.createAt >= #{time}
+    </select>
+
+    <insert id="saveSingle" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        insert into cbh_record_recharge
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="customerId != null and customerId != ''">customerId,</if>
+            <if test="carId != null">carId,</if>
+            <if test="amt != null and amt != ''">amt,</if>
+            <if test="cashAmt != null and cashAmt != ''">cashAmt,</if>
+            <if test="description != null and description != ''">description,</if>
+            <if test="type != null">type,</if>
+            <if test="timeRecharge != null">timeRecharge,</if>
+            <if test="status != null">status,</if>
+            <if test="eventType != null">eventType,</if>
+            <if test="eventNo != null">eventNo,</if>
+            <if test="createAt != null">createAt,</if>
+            <if test="flag != null">flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="customerId != null and customerId != ''">#{customerId},</if>
+            <if test="carId != null">#{carId},</if>
+            <if test="amt != null and amt != ''">#{amt},</if>
+            <if test="cashAmt != null and cashAmt != ''">#{cashAmt},</if>
+            <if test="description != null and description != ''">#{description,jdbcType=VARCHAR},</if>
+            <if test="type != null">#{type},</if>
+            <if test="timeRecharge != null">#{timeRecharge},</if>
+            <if test="status != null">#{status},</if>
+            <if test="eventType != null">#{eventType},</if>
+            <if test="eventNo != null">#{eventNo},</if>
+            <if test="createAt != null">now(),</if>
+            <if test="flag != null">#{flag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateModel" parameterType="java.util.Map">
+        UPDATE cbh_record_recharge
+        <set>
+            <if test="customerId != null and customerId != ''">customerId=#{customerId},</if>
+            <if test="carId != null">carId=#{carId},</if>
+            <if test="amt != null and amt != ''">amt=#{amt},</if>
+            <if test="cashAmt != null and cashAmt != ''">cashAmt=#{cashAmt},</if>
+            <if test="description != null and description != ''">description=#{description,jdbcType=VARCHAR},</if>
+            <if test="type != null">type=#{type},</if>
+            <if test="timeRecharge != null">timeRecharge=#{timeRecharge},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="eventType != null">eventType=#{eventType},</if>
+            <if test="eventNo != null">eventNo=#{eventNo},</if>
+            <if test="flag != null">flag=#{flag},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="slectByEventNo" resultType="map">
+        SELECT id,customerId,carId,amt,status FROM cbh_record_recharge WHERE eventNo=#{eventNo}
+    </select>
+</mapper>

@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvd.chevdian.mapper.UserDistributorMapper">
+
+    <resultMap type="com.cvd.chevdian.bean.distribute.UserDistributor" id="userDistributor">
+        <id property="id" column="id"/>
+        <result property="walletId" column="wallet_id"/>
+        <result property="roleId" column="role_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPn" column="user_pn"/>
+        <result property="password" column="password"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="portrait" column="portrait"/>
+        <result property="nickName" column="nick_name"/>
+        <result property="cityId" column="city_id"/>
+        <result property="loginDate" column="login_date"/>
+        <result property="loginDefaultTimes" column="login_default_times"/>
+        <result property="accountLockTime" column="account_lock_time"/>
+        <result property="lockType" column="lock_type"/>
+        <result property="userType" column="user_type"/>
+        <result property="status" column="status"/>
+        <result property="token" column="token"/>
+        <result property="tokenAge" column="token_age"/>
+        <result property="openId" column="open_id"/>
+        <result property="distributePer" column="distribute_per"/>
+        <result property="createAt" column="create_at"/>
+        <result property="channelId" column="channel_id"/>
+        <result property="userQRcode" column="user_qrcode"/>
+        <result property="agentQRcode" column="agent_qrcode"/>
+    </resultMap>
+
+    <insert id="saveSingle" useGeneratedKeys="true" keyProperty="id"
+            parameterType="map">
+        INSERT INTO cvd_user_distributor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="wallet_id != null">wallet_id,</if>
+            <if test="role_id != null">role_id,</if>
+            <if test="user_name != null">user_name,</if>
+            <if test="user_pn != null">user_pn,</if>
+            <if test="password != null">password,</if>
+            <if test="parent_id != null">parent_id,</if>
+            <if test="portrait != null">portrait,</if>
+            <if test="nick_name != null">nick_name,</if>
+            <if test="city_id != null">city_id,</if>
+            <if test="login_date != null">login_date,</if>
+            <if test="login_default_times != null">login_default_times,</if>
+            <if test="account_lock_time != null">account_lock_time,</if>
+            <if test="lock_type != null">lock_type,</if>
+            <if test="user_type != null">user_type,</if>
+            <if test="status != null">status,</if>
+            <if test="token != null">token,</if>
+            <if test="token_age != null">token_age,</if>
+            <if test="open_id != null">open_id,</if>
+            <if test="distribute_per != null">distribute_per,</if>
+            <if test="create_at != null">create_at,</if>
+            <if test="channel_id != null">channel_id,</if>
+            <if test="user_qrcode != null">user_qrcode,</if>
+            <if test="agent_qrcode != null">agent_qrcode,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="wallet_id != null">#{wallet_id},</if>
+            <if test="role_id != null">#{role_id},</if>
+            <if test="user_name != null">#{user_name},</if>
+            <if test="user_pn != null">#{user_pn},</if>
+            <if test="password != null">#{password},</if>
+            <if test="parent_id != null">#{parent_id},</if>
+            <if test="portrait != null">#{portrait},</if>
+            <if test="nick_name != null">#{nick_name},</if>
+            <if test="city_id != null">#{city_id},</if>
+            <if test="login_date != null">#{login_date},</if>
+            <if test="login_default_times != null">#{login_default_times},</if>
+            <if test="account_lock_time != null">#{account_lock_time},</if>
+            <if test="lock_type != null">#{lock_type},</if>
+            <if test="user_type != null">#{user_type},</if>
+            <if test="status != null">#{status},</if>
+            <if test="token != null">#{token},</if>
+            <if test="token_age != null">#{token_age},</if>
+            <if test="open_id != null">#{open_id},</if>
+            <if test="distribute_per != null">#{distribute_per},</if>
+            <if test="create_at != null">#{create_at},</if>
+            <if test="channel_id != null">#{channel_id},</if>
+            <if test="user_qrcode != null">#{user_qrcode},</if>
+            <if test="agent_qrcode != null">#{agent_qrcode},</if>
+        </trim>
+    </insert>
+
+    <insert id="saveEntitySingle" useGeneratedKeys="true" keyProperty="id"
+            parameterType="com.cvd.chevdian.bean.distribute.UserDistributor">
+        insert into cvd_user_distributor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="walletId != null">wallet_id,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="userPn != null">user_pn,</if>
+            <if test="password != null">password,</if>
+            <if test="parentId != null">parent_id,</if>
+            <if test="portrait != null">portrait,</if>
+            <if test="nickName != null">nick_name,</if>
+            <if test="cityId != null">city_id,</if>
+            <if test="loginDate != null">login_date,</if>
+            <if test="loginDefaultTimes != null">login_default_times,</if>
+            <if test="accountLockTime != null">account_lock_time,</if>
+            <if test="lockType != null">lock_type,</if>
+            <if test="userType != null">user_type,</if>
+            <if test="status != null">status,</if>
+            <if test="token != null">token,</if>
+            <if test="tokenAge != null">token_age,</if>
+            <if test="openId != null">open_id,</if>
+            <if test="distributePer != null">distribute_per,</if>
+            <if test="createAt != null">create_at,</if>
+            <if test="channelId != null">channel_id,</if>
+            <if test="userQRcode != null">user_qrcode,</if>
+            <if test="agentQRcode != null">agent_qrcode,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="walletId != null">#{walletId},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="userPn != null">#{userPn},</if>
+            <if test="password != null">#{password},</if>
+            <if test="parentId != null">#{parentId},</if>
+            <if test="portrait != null">#{portrait},</if>
+            <if test="nickName != null">#{nickName},</if>
+            <if test="cityId != null">#{cityId},</if>
+            <if test="loginDate != null">#{loginDate},</if>
+            <if test="loginDefaultTimes != null">#{loginDefaultTimes},</if>
+            <if test="accountLockTime != null">#{accountLockTime},</if>
+            <if test="lockType != null">#{lockType},</if>
+            <if test="userType != null">#{userType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="token != null">#{token},</if>
+            <if test="tokenAge != null">#{tokenAge},</if>
+            <if test="openId != null">#{openId},</if>
+            <if test="distributePer != null">#{distributePer},</if>
+            <if test="createAt != null">#{createAt},</if>
+            <if test="channelId != null">#{channelId},</if>
+            <if test="userQRcode != null">#{userQRcode},</if>
+            <if test="agentQRcode != null">#{agentQRcode},</if>
+        </trim>
+    </insert>
+
+    <update id="updateEntityModel" parameterType="com.cvd.chevdian.bean.distribute.UserDistributor">
+        UPDATE cvd_user_distributor
+        <set>
+            <if test="walletId != null">wallet_id = #{walletId},</if>
+            <if test="roleId != null">role_id = #{roleId},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="userPn != null">user_pn = #{userPn},</if>
+            <if test="password != null">password = #{password},</if>
+            <if test="parentId != null">parent_id = #{parentId},</if>
+            <if test="portrait != null">portrait = #{portrait},</if>
+            <if test="nickName != null">nick_name = #{nickName},</if>
+            <if test="cityId != null">city_id = #{cityId},</if>
+            <if test="loginDate != null">login_date = #{loginDate},</if>
+            <if test="loginDefaultTimes != null">login_default_times = #{loginDefaultTimes},</if>
+            <if test="accountLockTime != null">account_lock_time = #{accountLockTime},</if>
+            <if test="lockType != null">lock_type = #{lockType},</if>
+            <if test="userType != null">user_type = #{userType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="token != null">token = #{token},</if>
+            <if test="tokenAge != null">token_age = #{tokenAge},</if>
+            <if test="openId != null">open_id = #{openId},</if>
+            <if test="distributePer != null">distribute_per = #{distributePer},</if>
+            <if test="createAt != null">create_at = #{createAt},</if>
+            <if test="channelId != null">channel_id = #{channelId},</if>
+            <if test="userQRcode != null">user_qrcode = #{userQRcode},</if>
+            <if test="agentQRcode != null">agent_qrcode = #{agentQRcode},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteModel" parameterType="int">
+        DELETE FROM cvd_user_distributor WHERE id = #{id}
+    </delete>
+
+    <sql id="ALL_COLUMN">
+      id,wallet_id,role_id,user_name,user_pn,password,parent_id,portrait,nick_name,city_id,login_date,login_default_times,
+      account_lock_time,lock_type,user_type,status,token,token_age,open_id,distribute_per,create_at,channel_id,user_qrcode,agent_qrcode
+    </sql>
+
+    <select id="queryByOpenId" parameterType="string" resultType="userDistributor">
+        SELECT
+            cud.id,
+            cud.role_id roleId,
+            user_name userName,
+            user_pn userPn,
+            city_id cityId,
+            `status`,
+            user_type userType,
+            parent_id parentId,
+            channel_id channelId,
+            CONCAT( ifnull( sc2.cityName, "" ), sc.cityName ) cityName,
+            sc.provinceId,
+            crm.`name` roleName,
+            portrait,
+            cud.user_qrcode userQRcode,
+            cud.agent_qrcode agentQRcode
+        FROM
+            cvd_user_distributor cud
+            LEFT JOIN sys_city sc ON cud.city_id = sc.id
+            LEFT JOIN sys_city sc2 ON sc.provinceId = sc2.id
+            LEFT JOIN cvd_role_menu crm ON cud.role_id = crm.id
+        WHERE open_id = #{openId} AND lock_type = 0
+    </select>
+
+    <select id="queryByPhoneNo" parameterType="map" resultMap="userDistributor">
+        SELECT <include refid="ALL_COLUMN"/> FROM cvd_user_distributor
+        WHERE user_pn = #{phoneNo} AND lock_type = 0
+    </select>
+
+    <select id="queryByChannelId" parameterType="map" resultType="Map">
+        select * from cvd_user_distributor where channel_id = #{channelId}
+    </select>
+
+    <select id="selectListByType" resultType="UserDistributor" parameterType="UserDistributor">
+        SELECT
+            cud.id,
+            cud.role_id roleId,
+            user_name userName,
+            user_pn userPn,
+            city_id cityId,
+            `status`,
+            user_type userType,
+            parent_id parentId,
+            channel_id channelId,
+            CONCAT( ifnull( sc2.cityName, "" ), sc.cityName ) cityName,
+            sc.provinceId,
+            crm.`name` roleName
+        FROM
+            cvd_user_distributor cud
+            LEFT JOIN sys_city sc ON cud.city_id = sc.id
+            LEFT JOIN sys_city sc2 ON sc.provinceId = sc2.id
+            LEFT JOIN cvd_role_menu crm ON cud.role_id = crm.id
+        WHERE 1 = 1
+            AND cud.user_type = #{type}
+            <if test="user.userType != null and user.userType == 10">
+                <if test="type == 10">
+                    AND 1 = 2
+                </if>
+                <if test="type == 20">
+                    AND cud.parent_id = #{user.id}
+                </if>
+            </if>
+            <if test="user.userType != null and user.userType == 20">
+                AND 1 = 2
+            </if>
+
+            <if test="screenVo.beginTime != null and screenVo.endTime != null">
+                AND cud.create_at BETWEEN #{screenVo.beginTime} AND #{screenVo.endTime}
+            </if>
+            <if test="screenVo.cityId != null">
+                AND cud.city_id = #{screenVo.cityId}
+            </if>
+    </select>
+
+    <select id="selectChannelByName" parameterType="string" resultMap="userDistributor">
+        SELECT <include refid="ALL_COLUMN"/> FROM cvd_user_distributor
+        WHERE user_name = #{name} AND user_type = 10
+    </select>
+
+    <select id="queryById" resultType="UserDistributor" parameterType="integer">
+        SELECT
+        cud.id,
+        cud.role_id roleId,
+        user_name userName,
+        user_pn userPn,
+        city_id cityId,
+        `status`,
+        user_type userType,
+        parent_id parentId,
+        channel_id channelId,
+        CONCAT( ifnull( sc2.cityName, "" ), sc.cityName ) cityName,
+        sc.provinceId,
+        crm.`name` roleName
+        FROM
+        cvd_user_distributor cud
+        LEFT JOIN sys_city sc ON cud.city_id = sc.id
+        LEFT JOIN sys_city sc2 ON sc.provinceId = sc2.id
+        LEFT JOIN cvd_role_menu crm ON cud.role_id = crm.id
+        WHERE cud.id = #{id}
+    </select>
+    
+    <select id="searchByTypeAndInfo" resultType="UserDistributor">
+        SELECT
+            cud.id,
+            user_name userName,
+            user_pn userPn,
+            crm.`name` roleName
+        FROM
+            cvd_user_distributor cud
+            LEFT JOIN cvd_role_menu crm ON cud.role_id = crm.id
+        WHERE
+            1 = 1
+            AND cud.user_type = #{searchType}
+            <if test="user.userType != null and user.userType == 10">
+                <if test="searchType == 10">
+                    AND 1 = 2
+                </if>
+                <if test="searchType == 20">
+                    AND cud.parent_id = #{user.id}
+                </if>
+            </if>
+            <if test="user.userType != null and user.userType == 20">
+                AND 1 = 2
+            </if>
+
+            <if test="searchInfo !=null and searchInfo != ''">
+                AND ( cud.user_name LIKE concat('%',#{searchInfo},'%') OR cud.user_pn LIKE concat('%',#{searchInfo},'%'))
+            </if>
+        ORDER BY
+            cud.id DESC
+    </select>
+
+    <select id="channelCount" resultType="integer" parameterType="ScreenVo">
+        SELECT count(id) FROM cvd_user_distributor WHERE user_type = 10
+        <if test="beginTime != null and endTime != null">
+            AND create_at BETWEEN #{beginTime} AND #{endTime}
+        </if>
+        <if test="cityId != null">
+            AND city_id = #{cityId}
+        </if>
+    </select>
+
+    <select id="selectAgentCountByUserType" resultType="integer">
+        SELECT
+            count( id ) 
+        FROM
+            cvd_user_distributor 
+        WHERE
+            user_type = 20 
+            <if test="user.userType == 10">
+                AND parent_id = #{user.id}
+            </if>
+            <if test="screenVo.beginTime != null and screenVo.endTime != null">
+                AND create_at BETWEEN #{screenVo.beginTime} AND #{screenVo.endTime}
+            </if>
+            <if test="screenVo.cityId != null">
+                AND city_id = #{screenVo.cityId}
+            </if>
+    </select>
+
+    <!-- 根据查询类型 和 用户类型 查询 -->
+    <select id="selectUserByFirstPinYinChar" resultType="UserDistributor">
+        SELECT
+            cud.id,
+            cud.role_id roleId,
+            user_name userName,
+            user_pn userPn,
+            city_id cityId,
+            `status`,
+            user_type userType,
+            parent_id parentId,
+            channel_id channelId
+        FROM
+            cvd_user_distributor cud
+        WHERE 1 = 1
+            AND cud.user_type = #{type}
+            <if test="user.userType != null and user.userType == 10">
+                <if test="type != null and type == 10">
+                    AND id = #{user.id}
+                </if>
+                <if test="type != null and type == 20">
+                    AND cud.parent_id = #{user.id}
+                </if>
+            </if>
+            <if test="user.userType != null and user.userType == 20">
+                AND id = #{user.id}
+            </if>
+
+            <if test="screenVo.beginTime != null and screenVo.endTime != null">
+                AND cud.create_at BETWEEN #{screenVo.beginTime} AND #{screenVo.endTime}
+            </if>
+            <if test="screenVo.cityId != null">
+                AND cud.city_id = #{screenVo.cityId}
+            </if>
+            <if test="letter != null and letter != ''">
+                AND get_first_pinyin_char(user_name) = #{letter}
+            </if>
+    </select>
+
+    <select id="selectByRoleId" resultMap="userDistributor">
+        SELECT  <include refid="ALL_COLUMN"/> FROM cvd_user_distributor WHERE  role_id = #{roleId}
+    </select>
+</mapper>

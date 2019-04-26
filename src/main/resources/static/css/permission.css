@@ -1,0 +1,54 @@
+.container {
+  padding-top: .2rem;
+  padding-bottom: 80px;
+  background-color: #ededed; }
+
+.err-txt {
+  padding-right: 25px;
+  min-height: 20px;
+  line-height: 1.5;
+  color: #ff5942;
+  text-align: right; }
+
+.permission-item {
+  display: block;
+  margin: .2rem .3rem 0;
+  padding: 0 0 20px 0;
+  background-color: #fff;
+  border-radius: 6px;
+  color: #222; }
+  .permission-item:first-child {
+    margin-top: 0; }
+  .permission-item .info {
+    padding: 20px .2rem 0; }
+  .permission-item .p2 {
+    margin-left: auto;
+    color: #666; }
+
+#btn-add {
+  margin-right: .4rem; }
+
+.add-menu .item {
+  padding: 20px 20px 0; }
+
+.add-menu .item2 {
+  float: left;
+  display: block;
+  width: 2.8rem;
+  margin-right: .2rem;
+  padding: 15px 0;
+  background-color: #f2f2f2;
+  border-radius: 4px;
+  color: #999;
+  text-align: center; }
+  .add-menu .item2.active {
+    background-color: #ffecec;
+    color: #ff5942; }
+  .add-menu .item2:last-child {
+    margin-left: 0; }
+
+.add-menu .item3 {
+  padding: 0 20px; }
+
+.add-menu .p3 {
+  color: #666; }

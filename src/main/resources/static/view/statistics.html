@@ -1,0 +1,95 @@
+<html>
+<head>
+  <title>数据统计</title>
+  <meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=320,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/css/base.css?v=10">
+<script type="application/javascript" src="/lib/fastclick.js"></script>
+<script>
+  
+  if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+      FastClick.attach(document.body);
+    }, false);
+    window.addEventListener('resize', function(){
+      var deviceWidth = document.documentElement.clientWidth;
+      if(deviceWidth > 750) deviceWidth = 750;
+      document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+    });
+  }
+  var deviceWidth = document.documentElement.clientWidth;
+  if(deviceWidth > 750) deviceWidth = 750;
+  document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+</script>
+  <link rel="stylesheet" href="/css/datapicker2.css">
+  <link rel="stylesheet" href="/css/statistics.css">
+</head>
+<body>
+  <div class="container full">
+    <div id="filter-box">
+      <div class="content fbox-ac">
+        <a id="btn-filter-date" class="filter-item fbox-f1 ellipsis hover" href="javascript:;">
+          <p class="filter-option fsize-16">时间筛选<span class="arr2 arr-bottom"></p>
+          <p id="filter-date" class="filter-info fsize-14 ellipsis">--</p>
+        </a>
+        <a id="btn-filter-area" class="filter-item fbox-f1 ellipsis hover" href="javascript:;">
+          <p class="filter-option fsize-16">地区筛选<span class="arr2 arr-bottom"></p>
+          <p id="filter-area" class="filter-info fsize-14 ellipsis">--</p>
+        </a>
+        <a id="btn-filter-clear" class="fbox-cc hover" href="javascript:;"><span class="m-ico i4"></span></a>
+      </div>
+    </div>
+    <div id="main">
+      <script type="text/template" id="main-tpl">
+        <p class="title1 fsize-18">数量统计（个）</p>
+        <div class="item-box fsize-16 clearfix">
+          {@if user.userType == 30}
+          <a href="javascript:;"><p>渠道</p><p class="p2">{@if data.channelCount}${data.channelCount}{@else}0{@/if}</p></a>
+          {@/if}
+          {@if user.userType == 30 || user.userType == 10}
+          <a href="javascript:;"><p>代理</p><p class="p2">{@if data.agentCount}${data.agentCount}{@else}0{@/if}</p></a>
+          {@/if}
+          <a class="hover" href="/view/statistics_car.html"><p>客户</p><p class="p2">{@if data.carCount}${data.carCount}{@else}0{@/if}</p><span class="arr arr-right arr-gray"></span></a>
+        </div>
+        <p class="title1 fsize-18">金额统计（元）</p>
+        <div class="item-box fsize-16 clearfix">
+          <a href="javascript:;"><p>充值</p><p class="p2">{@if data.chargeAmt}${data.chargeAmt}{@else}0{@/if}</p></a>
+          <a href="javascript:;"><p>退款</p><p class="p2">{@if data.refundAmt}${data.refundAmt}{@else}0{@/if}</p></a>
+        </div>
+      </script>
+    </div>
+  </div>
+  <script src="/lib/zepto.js"></script>
+<script src="/lib/juicer.js"></script>
+<script src="/js/common.js?v=1"></script>
+<script>
+  if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+    handleFontSize();
+  } else {
+    if (document.addEventListener) {
+      document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+    } else if (document.attachEvent) {
+      document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+      document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+    }
+  }
+
+  function handleFontSize() {
+    // 设置网页字体为默认大小
+    WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    // 重写设置网页字体大小的事件
+    WeixinJSBridge.on('menu:setfont', function() {
+      WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    });
+  }
+</script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script src="/lib/datapicker2.js"></script>
+  <script src="/js/statistics.js"></script>
+</body>
+</html>

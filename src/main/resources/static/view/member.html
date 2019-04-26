@@ -1,0 +1,359 @@
+<html>
+<head>
+  <title>我的团队</title>
+  <meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=320,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/css/base.css?v=10">
+<script type="application/javascript" src="/lib/fastclick.js"></script>
+<script>
+  
+  if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+      FastClick.attach(document.body);
+    }, false);
+    window.addEventListener('resize', function(){
+      var deviceWidth = document.documentElement.clientWidth;
+      if(deviceWidth > 750) deviceWidth = 750;
+      document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+    });
+  }
+  var deviceWidth = document.documentElement.clientWidth;
+  if(deviceWidth > 750) deviceWidth = 750;
+  document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+</script>
+  <link rel="stylesheet" href="/css/tabbox.css">
+  <link rel="stylesheet" href="/css/datapicker2.css">
+  <link rel="stylesheet" href="/css/member.css">
+</head>
+<body>
+  <div id="container" class="container full">
+    <script type="text/template" id="main-tpl">
+    <div id="main">
+      <div id="menu-box" class="fbox-cc">
+        <a class="menu-item fbox-cc fsize-16 inhover" href="javascript:;" data-value="1"><p>客户</p></a>
+        {@if userType == 10}
+        <a class="menu-item fbox-cc fsize-16 inhover" href="javascript:;" data-value="2"><p>代理</p></a>
+        {@else if userType == 30}
+        <a class="menu-item fbox-cc fsize-16 inhover" href="javascript:;" data-value="2"><p>代理</p></a>
+        <a class="menu-item fbox-cc fsize-16 inhover" href="javascript:;" data-value="3"><p>渠道</p></a>
+        {@/if}
+        <a id="btn-search" class="hover fbox-cc" href="javascript:;"><i class="b-icon i6"></i></a>
+      </div>
+      <div class="tabbox fsize-14"><div class="tabbox-layer">
+        <div class="tabbox-tab full">
+          <div class="tabbox-refresh fbox-cc fsize-14"><span class="txt">下拉刷新</span><span class="arr3 arr-bottom arr-darkgray"></span></div>
+          <div id="car-box" class="list-box"></div>
+        </div>
+        {@if userType == 10}
+        <div class="tabbox-tab full">
+          <div class="tabbox-refresh fbox-cc fsize-14"><span class="txt">下拉刷新</span><span class="arr3 arr-bottom arr-darkgray"></span></div>
+          <div id="agent-box" class="list-box"></div>
+        </div>
+        {@else if userType == 30}
+        <div class="tabbox-tab full">
+          <div class="tabbox-refresh fbox-cc fsize-14"><span class="txt">下拉刷新</span><span class="arr3 arr-bottom arr-darkgray"></span></div>
+          <div id="agent-box" class="list-box"></div>
+        </div>
+        <div class="tabbox-tab full">
+          <div class="tabbox-refresh fbox-cc fsize-14"><span class="txt">下拉刷新</span><span class="arr3 arr-bottom arr-darkgray"></span></div>
+          <div id="channel-box" class="list-box"></div>
+        </div>
+        {@/if}
+      </div></div>
+      <div class="btn-wrap">
+        <div class="btn-box btn-car-box">
+          <a class="btn btn-car-recharge weak hover btn-first fsize-16" href="javascript:;">　充值　</a>
+          <a class="btn btn-car-invite strong hover btn-last fsize-16" href="/view/car_invited.html">邀请客户</a>
+          <a class="btn btn-car-cancel weak hover btn-first fsize-16" href="javascript:;">　取消　</a>
+          <a class="btn btn-car-pay strong hover btn-last fsize-16" href="javascript:;">　支付　</a>
+        </div>
+        <div class="btn-box">
+          <a class="btn strong hover btn-first btn-last fsize-16" href="/view/agent_invited.html">邀请代理</a>
+        </div>
+        <div class="btn-box">
+          <a class="btn btn-channel-add strong hover btn-first btn-last fsize-16" href="javascript:;">创建渠道</a>
+        </div>
+      </div>
+    </div>
+    <div id="search-box" class="hide">
+      <div id="search-bar" class="fbox-ac">
+        <input id="search-content" class="fsize-16" type="text" maxlength="50" placeholder="请输入手机号或者名称查询">
+        <i class="b-icon i6"></i>
+        <a id="btn-search-confirm" class="hover fsize-16" href="javascript:;">搜索</a>
+        <a id="btn-search-cancel" class="hover fsize-16" href="javascript:;">取消</a>
+      </div>
+      <div id="search-result">
+        <div id="search-result-content"></div>
+      </div>
+    </div>
+    </script>
+  </div>
+  <script type="text/template" id="car-list-tpl">
+    {@each _ as it}
+    <a class="list-item list-item-car hover fsize-16" href="javascript:;" data-id="${it.carId}">
+      <div class="info fbox-ac">
+        <p>车牌号码：</p>
+        <p class="p2 fsize-14">{@if it.licensePlateNumber}${it.licensePlateNumber}{@else}——{@/if}</p>
+      </div>
+      <div class="info fbox-ac">
+        <p>手机号码：</p>
+        <p class="p2 fsize-14">{@if it.customerPN}${it.customerPN}{@else}——{@/if}</p>
+      </div>
+      <div class="info fbox-ac">
+        <p>互助金：</p>
+        <p class="p2 fsize-14">{@if it.amtCooperation}${it.amtCooperation}元{@else}0元{@/if}</p>
+      </div>
+    </a>
+    {@/each}
+  </script>
+  <script type="text/template" id="car-detail-tpl">
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">车主姓名</p>
+      <p class="p2">{@if nameCarOwner}${nameCarOwner}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">车牌号</p>
+      <p class="p2">{@if licensePlateNumber}${licensePlateNumber}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">手机号</p>
+      <p class="p2">{@if customerPN}${customerPN}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">互助金</p>
+      <p class="p2">{@if amtCooperation}${amtCooperation}元{@else}0元{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">充值金额</p>
+      <p class="p2">{@if rechargeAmt}${rechargeAmt}{@else}0元{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">地区</p>
+      <p class="p2">{@if cityName}${cityName}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">保险投保公司</p>
+      <p class="p2">{@if insurance}${insurance}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">保险到期日</p>
+      <p class="p2">{@if endTime}${endTime}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">状态</p>
+      <p class="p2">{@if status}${status|build_carStatus}{@else}——{@/if}</p>
+    </div>
+  </script>
+  <script type="text/template" id="car-edit-tpl">
+    <div class="car-item fbox-ac fsize-16">
+      <p>车主姓名</p>
+      <input class="car-owner-name fsize-16 fbox-f1 tr" type="text" maxlength="50" placeholder="请输入车主姓名" value="{@if nameCarOwner}${nameCarOwner}{@/if}">
+    </div>
+    <p class="err-txt fsize-12 err-txt-car-owner-name"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p>保险投保公司</p>
+      <input class="car-insurance-name fsize-16 fbox-f1 tr" type="text" maxlength="50" placeholder="请选择保险投保公司" value="{@if insurance}${insurance}{@/if}" readonly>
+      <span class="arr2 arr-bottom"></span>
+    </div>
+    <p class="err-txt fsize-12 err-txt-car-insurance-name"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p>保险到期日</p>
+      <input class="car-insurance-time fsize-16 fbox-f1 tr hover" type="text" maxlength="50" placeholder="请选择保险到期日" value="{@if endTime}${endTime}{@/if}" readonly>
+      <span class="arr2 arr-bottom"></span>
+    </div>
+    <p class="err-txt fsize-12 err-txt-car-insurance-time"></p>
+  </script>
+  <script type="text/template" id="car-pay-tpl">
+    <div class="car-item desc fsize-16">请选择充值金额</div>
+    <div id="pay-level-box" class="car-item fbox tc">
+      <a class="level-item fbox-cc hover txt-lv2 active" href="javascript:;" data-value="1"><div><p class="p4 fsize-12">有效期1个月</p><p class="p6 fsize-16 fstrong">9元</p><p class="p5 fsize-12">约 9元/月</p></div></a>
+      <a class="level-item fbox-cc hover txt-lv2" href="javascript:;" data-value="4"><div><p class="p4 fsize-12">有效期3个月</p><p class="p6 fsize-16 fstrong">29元</p><p class="p5 fsize-12">约 9元/月</p></div></a>
+      <a class="level-item fbox-cc hover txt-lv2" href="javascript:;" data-value="3"><div><p class="p4 fsize-12">有效期1年</p><p class="p6 fsize-16 fstrong">99元</p><p class="p5 fsize-12">约 9元/月</p></div></a>
+    </div>
+    <p class="car-item desc2 fsize-12 fbox-ac"><span class="fsize-14">!</span>　价格随每月救助金额略有浮动</p>
+  </script>
+  <script type="text/template" id="agent-list-tpl">
+    {@each _ as it}
+    <a class="list-item list-item-agent hover fsize-16" href="javascript:;" data-id="${it.id}">
+      <div class="info fbox-ac">
+        <p>代理人成员：</p>
+        <p class="agent-item-name p2 fsize-14">{@if it.userName}${it.userName}{@else}——{@/if}</p>
+      </div>
+      <div class="info fbox-ac">
+        <p>手机号码：</p>
+        <p class="agent-item-phone p2 fsize-14">{@if it.userPn}${it.userPn}{@else}——{@/if}</p>
+      </div>
+      <div class="info fbox-ac">
+        <p>角色：</p>
+        <p class="agent-item-role p2 fsize-14">{@if it.roleName}${it.roleName}{@else}——{@/if}</p>
+      </div>
+    </a>
+    {@/each}
+  </script>
+  <script type="text/template" id="agent-detail-tpl">
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">代理人姓名</p>
+      <p class="p2">{@if userName}${userName}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">手机号码</p>
+      <p class="p2">{@if userPn}${userPn}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">角色</p>
+      <p class="p2">{@if roleName}${roleName}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">地区</p>
+      <p class="p2">{@if provinceId || cityId}${provinceId|juicer_getCityName, cityId}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">状态</p>
+      <p class="p2">{@if status}${status}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item agent-disable-box {@if status != 1}hide{@/if}">
+      <textarea class="agent-disable-reson" readonly>因违规操作被冻结</textarea>
+    </div>
+  </script>
+  <script type="text/template" id="agent-edit-tpl">
+    <div class="car-item fbox-ac fsize-16">
+      <p>代理人姓名</p>
+      <input class="agent-name fsize-16 fbox-f1 tr" type="text" maxlength="50" placeholder="请输入代理人姓名" value="{@if userName}${userName}{@/if}">
+    </div>
+    <p class="err-txt fsize-12 err-txt-agent-name"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p>手机号码</p>
+      <input class="agent-phone fsize-16 fbox-f1 tr" type="tel" maxlength="11" placeholder="请输入手机号码" value="{@if userPn}${userPn}{@/if}">
+    </div>
+    <p class="err-txt fsize-12 err-txt-agent-phone"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p>角色</p>
+      <input class="agent-role fsize-16 fbox-f1 tr hover" type="text" maxlength="50" placeholder="请选择角色" value="{@if roleName}${roleName}{@/if}" readonly>
+      <span class="arr2 arr-bottom"></span>
+    </div>
+    <p class="err-txt fsize-12 err-txt-agent-role"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p>地区</p>
+      <input class="agent-city fsize-16 fbox-f1 tr hover" type="text" maxlength="50" placeholder="请选择地区" value="{@if provinceId || cityId}${provinceId|juicer_getCityName, cityId}{@/if}" readonly>
+      <span class="arr2 arr-bottom"></span>
+    </div>
+    <p class="err-txt fsize-12 err-txt-agent-city"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p class="fbox-f1 tl">状态</p>
+      <a class="btn-agent-status btn-agent-enable hover {@if status == 1}active{@/if}" href="javascript:;">正常</a>
+      <a class="btn-agent-status btn-agent-disable hover {@if status != 1}active{@/if}" href="javascript:;">冻结</a>
+    </div>
+    <div class="car-item agent-disable-box {@if status == 1}hide{@/if}">
+      <textarea class="agent-disable-reson" placeholder="请填写冻结原因"></textarea>
+    </div>
+  </script>
+  <script type="text/template" id="channel-list-tpl">
+    {@each _ as it}
+    <a class="list-item list-item-channel hover fsize-16" href="javascript:;" data-id="${it.id}">
+      <div class="info fbox-ac">
+        <p>名称：</p>
+        <p class="channel-item-name p2 fsize-14">${it.userName}</p>
+      </div>
+      <div class="info fbox-ac">
+        <p>手机号码：</p>
+        <p class="channel-item-phone p2 fsize-14">${it.userPn}</p>
+      </div>
+      <div class="info fbox-ac">
+        <p>角色：</p>
+        <p class="channel-item-role p2 fsize-14">${it.roleName}</p>
+      </div>
+    </a>
+    {@/each}
+  </script>
+  <script type="text/template" id="channel-detail-tpl">
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">渠道名称</p>
+      <p class="p2">{@if userName}${userName}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">手机号码</p>
+      <p class="p2">{@if userPn}${userPn}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">角色</p>
+      <p class="p2">{@if roleName}${roleName}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">地区</p>
+      <p class="p2">{@if provinceId || cityId}${provinceId|juicer_getCityName, cityId}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item fsize-16 fbox">
+      <p class="p1">状态</p>
+      <p class="p2">{@if status}${status}{@else}——{@/if}</p>
+    </div>
+    <div class="car-item agent-disable-box {@if status != 1}hide{@/if}">
+      <textarea class="agent-disable-reson" readonly>因违规操作被冻结</textarea>
+    </div>
+  </script>
+  <script type="text/template" id="channel-add-tpl">
+    <div class="car-item fbox-ac fsize-16">
+      <p>渠道名称</p>
+      <input class="channel-name fsize-16 fbox-f1 tr" type="text" maxlength="50" placeholder="请输入渠道名称" value="{@if userName}${userName}{@/if}">
+    </div>
+    <p class="err-txt fsize-12 err-txt-channel-name"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p>手机号码</p>
+      <input class="channel-phone fsize-16 fbox-f1 tr" type="tel" maxlength="11" placeholder="请输入手机号码" value="{@if userPn}${userPn}{@/if}">
+    </div>
+    <p class="err-txt fsize-12 err-txt-channel-phone"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p>角色</p>
+      <input class="channel-role fsize-16 fbox-f1 tr hover" type="text" maxlength="50" placeholder="请选择角色" value="{@if roleName}${roleName}{@/if}" readonly>
+      <span class="arr2 arr-bottom"></span>
+    </div>
+    <p class="err-txt fsize-12 err-txt-channel-role"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p>地区</p>
+      <input class="channel-city fsize-16 fbox-f1 tr hover" type="text" maxlength="50" placeholder="请选择地区" value="{@if provinceId || cityId}${provinceId|juicer_getCityName, cityId}{@/if}" readonly>
+      <span class="arr2 arr-bottom"></span>
+    </div>
+    <p class="err-txt fsize-12 err-txt-channel-city"></p>
+    <div class="car-item c2 fbox-ac fsize-16">
+      <p class="fbox-f1 tl">状态</p>
+      <a class="btn-channel-status btn-channel-enable hover {@if status == 1}active{@/if}" href="javascript:;">正常</a>
+      <a class="btn-channel-status btn-channel-disable hover {@if status != 1}active{@/if}" href="javascript:;">冻结</a>
+    </div>
+    <div class="car-item channel-disable-box {@if status == 1}hide{@/if}">
+      <textarea class="channel-disable-reson" placeholder="请填写冻结原因"></textarea>
+    </div>
+  </script>
+  <script src="/lib/zepto.js"></script>
+<script src="/lib/juicer.js"></script>
+<script src="/js/common.js?v=1"></script>
+<script>
+  if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+    handleFontSize();
+  } else {
+    if (document.addEventListener) {
+      document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+    } else if (document.attachEvent) {
+      document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+      document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+    }
+  }
+
+  function handleFontSize() {
+    // 设置网页字体为默认大小
+    WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    // 重写设置网页字体大小的事件
+    WeixinJSBridge.on('menu:setfont', function() {
+      WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    });
+  }
+</script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script src="/lib/tabbox.js"></script>
+  <script src="/lib/datapicker2.js"></script>
+  <script src="/js/member.js"></script>
+</body>
+</html>

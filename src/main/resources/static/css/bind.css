@@ -1,0 +1,49 @@
+.container {
+  padding: 2rem .75rem 4rem; }
+
+.p1 {
+  margin-bottom: .2rem; }
+
+#logo {
+  display: block;
+  width: 1.7rem;
+  margin: 0 auto .5rem; }
+
+#btn-code {
+  height: .9rem;
+  padding: 0 .2rem;
+  margin-left: .2rem;
+  line-height: .9rem;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid #ff5942;
+  color: #ff5942; }
+
+#btn-confirm {
+  margin-top: .4rem; }
+
+.err-txt {
+  min-height: .4rem;
+  line-height: 1.5;
+  color: #ff5942; }
+
+.ibox {
+  position: relative;
+  height: .9rem; }
+  .ibox input {
+    position: relative;
+    padding: 0 .2rem 0 .9rem;
+    background: #ededed;
+    z-index: 1; }
+    .ibox input::-webkit-input-placeholder {
+      color: #999; }
+    .ibox input::-ms-input-placeholder {
+      color: #999; }
+    .ibox input::placeholder {
+      color: #999; }
+  .ibox .b-icon {
+    position: absolute;
+    top: 50%;
+    left: .2rem;
+    margin-top: -.25rem;
+    z-index: 2; }

@@ -1,0 +1,108 @@
+<html>
+<head>
+  <title>客户统计</title>
+  <meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=320,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/css/base.css?v=10">
+<script type="application/javascript" src="/lib/fastclick.js"></script>
+<script>
+  
+  if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+      FastClick.attach(document.body);
+    }, false);
+    window.addEventListener('resize', function(){
+      var deviceWidth = document.documentElement.clientWidth;
+      if(deviceWidth > 750) deviceWidth = 750;
+      document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+    });
+  }
+  var deviceWidth = document.documentElement.clientWidth;
+  if(deviceWidth > 750) deviceWidth = 750;
+  document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+</script>
+  <link rel="stylesheet" href="/css/statistics.css">
+</head>
+<body>
+  <div class="container full">
+    <script type="text/template" id="main-tpl">
+    <div id="filter-box">
+      <div class="content fbox-ac">
+        {@if userType == 10 || userType == 30}
+        <a id="btn-filter-channel" class="filter-item fbox-f1 ellipsis hover" href="javascript:;">
+          <p class="filter-option fsize-16">渠道<span class="arr2 arr-bottom"></p>
+          <p id="filter-channel" class="filter-info fsize-14 ellipsis">--</p>
+        </a>
+        {@/if}
+        <a id="btn-filter-agent" class="filter-item fbox-f1 ellipsis hover" href="javascript:;">
+          <p class="filter-option fsize-16">代理人<span class="arr2 arr-bottom"></p>
+          <p id="filter-agent" class="filter-info fsize-14 ellipsis">--</p>
+        </a>
+        <a id="btn-filter-clear" class="fbox-cc hover" href="javascript:;"><span class="m-ico i4"></span></a>
+      </div>
+    </div>
+    <div id="main"></div>
+    <div id="filter" class="container"><div id="filter-list"></div></div>
+    <div class="btn-wrap hide">
+      <div class="btn-box">
+        <a id="btn-phone" class="btn strong hover" href="javascript:;">　拨打　</a>
+      </div>
+    </div>
+    </script>
+  </div>
+  <script type="text/template" id="car-tpl">
+    {@each _ as it}
+    <a class="list-item fsize-16" href="javascript:;" data-id="${it.carId}">
+      <div class="info fbox-ac">
+        <p>车牌号码：</p>
+        <p class="p2 fsize-14">{@if it.licensePlateNumber}${it.licensePlateNumber}{@else}——{@/if}</p>
+      </div>
+      <div class="info fbox-ac">
+        <p>手机号码：</p>
+        <p class="p2 fsize-14">{@if it.customerPN}${it.customerPN}{@else}——{@/if}</p>
+      </div>
+      <div class="info fbox-ac">
+        <p>互助金：</p>
+        <p class="p2 fsize-14">{@if it.amtCooperation}${it.amtCooperation}元{@else}0元{@/if}</p>
+      </div>
+    </a>
+    {@/each}
+  </script>
+  <script type="text/template" id="filter-tpl">
+    {@each list as it}
+    <a class="f-item fsize-16 hover {@if it.id == active_id}active{@/if}" data-id="${it.id}" data-name="${it.name}" data-phone="${it.tel}"><p>${it.name}</p><p class="p2 fsize-14">{@if it.num}${it.num}人{@else}0人{@/if}</p></a>
+    {@/each}
+  </script>
+  <script src="/lib/zepto.js"></script>
+<script src="/lib/juicer.js"></script>
+<script src="/js/common.js?v=1"></script>
+<script>
+  if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+    handleFontSize();
+  } else {
+    if (document.addEventListener) {
+      document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+    } else if (document.attachEvent) {
+      document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+      document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+    }
+  }
+
+  function handleFontSize() {
+    // 设置网页字体为默认大小
+    WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    // 重写设置网页字体大小的事件
+    WeixinJSBridge.on('menu:setfont', function() {
+      WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    });
+  }
+</script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script src="/js/statistics_car.js"></script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvd.chevdian.mapper.MaintenanceshopMapper">
+
+    <sql id="ALL_COLUMN">
+      id,type,status,name,qrcode,tel,uuidArea,flag
+    </sql>
+
+    <select id="queryById" parameterType="int" resultType="ChannelVo">
+        SELECT <include refid="ALL_COLUMN"/> FROM cbh_maintenanceshop
+        WHERE id = #{id}
+    </select>
+
+    <select id="selectLikeName" parameterType="string" resultType="ChannelVo">
+        SELECT <include refid="ALL_COLUMN"/> FROM  cbh_maintenanceshop WHERE  type = 20 `name` AND LIKE concat('%',#{name},'%')
+    </select>
+
+    <select id="queryByName" parameterType="string" resultType="ChannelVo">
+        SELECT <include refid="ALL_COLUMN"/> FROM  cbh_maintenanceshop WHERE `name` = #{name} AND type = 20
+    </select>
+
+    <insert id="saveSingle" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        insert into cbh_maintenanceshop
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accountId != null">accountId,</if>
+            <if test="type != null">type,</if>
+            <if test="status != null">status,</if>
+            <if test="name != null and name != ''">name,</if>
+            <if test="orderQuantity != null">orderQuantity,</if>
+            <if test="orderMonth != null">orderMonth,</if>
+            <if test="target != null">target,</if>
+            <if test="ordersRadius != null">ordersRadius,</if>
+            <if test="shopDescribe != null">shopDescribe,</if>
+            <if test="ratio != null">ratio,</if>
+            <if test="level != null">level,</if>
+            <if test="levelShare != null">levelShare,</if>
+            <if test="levelSettlement != null">levelSettlement,</if>
+            <if test="businessLicenseImg != null and businessLicenseImg != ''">businessLicenseImg,</if>
+            <if test="img != null and img != ''">img,</if>
+            <if test="poster != null and poster != ''">poster,</if>
+            <if test="linkman != null and linkman != ''">linkman,</if>
+            <if test="advantage != null and advantage != ''">advantage,</if>
+            <if test="uuidArea != null and uuidArea != ''">uuidArea,</if>
+            <if test="qrcode != null and qrcode != ''">qrcode,</if>
+            <if test="tel != null and tel != ''">tel,</if>
+            <if test="wechat != null and wechat != ''">wechat,</if>
+            <if test="address != null and address != ''">address,</if>
+            <if test="longitude != null and longitude != ''">longitude,</if>
+            <if test="latitude != null and latitude != ''">latitude,</if>
+            <if test="businessHours != null and businessHours != ''">businessHours,</if>
+            <if test="logo != null and logo != ''">logo,</if>
+            <if test="repairNum != null">repairNum,</if>
+            <if test="commentNum != null">commentNum,</if>
+            <if test="score != null">score,</if>
+            <if test="servicePoints != null">servicePoints,</if>
+            <if test="timeJoin != null">timeJoin,</if>
+            <if test="createAt != null">createAt,</if>
+            <if test="distributeper != null" >distributePer,</if>
+            <if test="agentqr != null" >agentQR,</if>
+            <if test="flag != null">flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="accountId != null">#{accountId,jdbcType=INTEGER},</if>
+            <if test="type != null">#{type,jdbcType=INTEGER},</if>
+            <if test="status != null">#{status,jdbcType=INTEGER},</if>
+            <if test="name != null and name != ''">#{name,jdbcType=VARCHAR},</if>
+            <if test="orderQuantity != null">#{orderQuantity,jdbcType=INTEGER},</if>
+            <if test="orderMonth != null">#{orderMonth,jdbcType=INTEGER},</if>
+            <if test="target != null">#{target,jdbcType=INTEGER},</if>
+            <if test="ordersRadius != null">#{ordersRadius,jdbcType=INTEGER},</if>
+            <if test="shopDescribe != null">#{shopDescribe,jdbcType=INTEGER},</if>
+            <if test="ratio != null">#{ratio,jdbcType=DECIMAL},</if>
+            <if test="level != null">#{level,jdbcType=INTEGER},</if>
+            <if test="levelShare != null">#{levelShare,jdbcType=INTEGER},</if>
+            <if test="levelSettlement != null">#{levelSettlement,jdbcType=INTEGER},</if>
+            <if test="businessLicenseImg != null and businessLicenseImg != ''">#{businessLicenseImg,jdbcType=VARCHAR},</if>
+            <if test="img != null and img != ''">#{img,jdbcType=VARCHAR},</if>
+            <if test="poster != null and poster != ''">#{poster,jdbcType=VARCHAR},</if>
+            <if test="linkman != null and linkman != ''">#{linkman,jdbcType=VARCHAR},</if>
+            <if test="advantage != null and advantage != ''">#{advantage,jdbcType=VARCHAR},</if>
+            <if test="uuidArea != null and uuidArea != ''">#{uuidArea,jdbcType=VARCHAR},</if>
+            <if test="qrcode != null and qrcode != ''">#{qrcode,jdbcType=VARCHAR},</if>
+            <if test="tel != null and tel != ''">#{tel,jdbcType=VARCHAR},</if>
+            <if test="wechat != null and wechat != ''">#{wechat,jdbcType=VARCHAR},</if>
+            <if test="address != null and address != ''">#{address,jdbcType=VARCHAR},</if>
+            <if test="longitude != null and longitude != ''">#{longitude,jdbcType=VARCHAR},</if>
+            <if test="latitude != null and latitude != ''">#{latitude,jdbcType=VARCHAR},</if>
+            <if test="businessHours != null and businessHours != ''">#{businessHours,jdbcType=VARCHAR},</if>
+            <if test="logo != null and logo != ''">#{logo,jdbcType=VARCHAR},</if>
+            <if test="repairNum != null">#{repairNum,jdbcType=INTEGER},</if>
+            <if test="commentNum != null">#{commentNum,jdbcType=INTEGER},</if>
+            <if test="score != null">#{score,jdbcType=INTEGER},</if>
+            <if test="servicePoints != null">#{servicePoints,jdbcType=Double},</if>
+            <if test="timeJoin != null">#{timeJoin,jdbcType=DATE},</if>
+            <if test="createAt != null">#{createAt,jdbcType=DATE},</if>
+            <if test="distributeper != null" >#{distributeper,jdbcType=DECIMAL},</if>
+            <if test="agentqr != null" >#{agentqr,jdbcType=VARCHAR},</if>
+            <if test="flag != null">#{flag,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+
+    <update id="updateFlagById" parameterType="ChannelVo">
+        UPDATE cbh_maintenanceshop
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="tel != null">tel = #{tel},</if>
+            <if test="uuidArea != null">uuidArea = #{uuidArea},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="flag != null">flag = #{flag},</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateById" parameterType="UserDistributor">
+        UPDATE cbh_maintenanceshop
+        <set>
+            <if test="userName != null">name = #{userName},</if>
+            <if test="userPn != null">tel = #{userPn},</if>
+            <if test="cityId != null">uuidArea = #{cityId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="flag != null">flag = #{flag},</if>
+        </set>
+        WHERE id = #{channelId}
+    </update>
+</mapper>

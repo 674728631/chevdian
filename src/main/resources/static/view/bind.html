@@ -1,0 +1,84 @@
+<html>
+<head>
+  <title>绑定手机号</title>
+  <meta charset="UTF-8">
+<meta name="format-detection" content="telephone=no">
+<meta name="viewport" content="width=320,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta http-equiv="expires" content="0">
+<link rel="shortcut icon" href="/favicon.ico">
+<link rel="stylesheet" href="/css/base.css?v=10">
+<script type="application/javascript" src="/lib/fastclick.js"></script>
+<script>
+  
+  if ('addEventListener' in document) {
+    document.addEventListener('DOMContentLoaded', function() {
+      FastClick.attach(document.body);
+    }, false);
+    window.addEventListener('resize', function(){
+      var deviceWidth = document.documentElement.clientWidth;
+      if(deviceWidth > 750) deviceWidth = 750;
+      document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+    });
+  }
+  var deviceWidth = document.documentElement.clientWidth;
+  if(deviceWidth > 750) deviceWidth = 750;
+  document.documentElement.style.fontSize = deviceWidth / 7.5 + 'px';
+</script>
+  <link rel="stylesheet" href="/css/bind.css">
+</head>
+<body>
+  <div class="container full">
+    <script type="text/template" id="main-tpl">
+      <img id="logo" src="/img/app_logo_2.png">
+      <p class="p1 fsize-14">首次用该微信号登陆，请绑定手机号码</p>
+      <div class="ibox">
+        <i class="b-icon i1"></i>
+        <input id="phone" class="fsize-16" type="tel" maxlength="11" placeholder="请输入手机号码">
+      </div>
+      <p class="err-txt fsize-12 err-txt-phone"></p>
+      <div class="ibox fbox-ac">
+        <i class="b-icon i2"></i>
+        <input id="code" class="fsize-16" type="tel" maxlength="4" placeholder="请输入手机验证码">
+        <a id="btn-code" class="fsize-16 hover" href="javascript:;">发送验证码</a>
+      </div>
+      <p class="err-txt fsize-12 err-txt-code"></p>
+      <div id="sub" class="hide">
+        <div class="ibox">
+          <i class="b-icon i3"></i>
+          <input id="uname" class="fsize-16" type="text" maxlength="50" placeholder="请输入真实姓名">
+        </div>
+        <p class="err-txt fsize-12  err-txt-uname"></p>
+      </div>
+      <a id="btn-confirm" class="hover btn strong" href="javascript:;">登录</a>
+    </script>
+  </div>
+  <script src="/lib/zepto.js"></script>
+<script src="/lib/juicer.js"></script>
+<script src="/js/common.js?v=1"></script>
+<script>
+  if (typeof WeixinJSBridge == "object" && typeof WeixinJSBridge.invoke == "function") {
+    handleFontSize();
+  } else {
+    if (document.addEventListener) {
+      document.addEventListener("WeixinJSBridgeReady", handleFontSize, false);
+    } else if (document.attachEvent) {
+      document.attachEvent("WeixinJSBridgeReady", handleFontSize);
+      document.attachEvent("onWeixinJSBridgeReady", handleFontSize);
+    }
+  }
+
+  function handleFontSize() {
+    // 设置网页字体为默认大小
+    WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    // 重写设置网页字体大小的事件
+    WeixinJSBridge.on('menu:setfont', function() {
+      WeixinJSBridge.invoke('setFontSizeCallback', { 'fontSize' : 0 });
+    });
+  }
+</script>
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.4.0.js"></script>
+  <script src="/js/bind.js"></script>
+</body>
+</html>

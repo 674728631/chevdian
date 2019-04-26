@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvd.chevdian.mapper.system.RoleMenuMapper">
+
+    <insert id="saveEntitySingle" parameterType="RoleMenu" useGeneratedKeys="true" keyProperty="id">
+        insert into cvd_role_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">name,</if>
+            <if test="roleId != null">role_id,</if>
+            <if test="menuId != null">menu_id,</if>
+            <if test="power != null">power,</if>
+            <if test="createAt != null">create_at,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">#{name},</if>
+            <if test="roleId != null">#{roleId},</if>
+            <if test="menuId != null">#{menuId},</if>
+            <if test="power != null">#{power},</if>
+            <if test="createAt != null">#{createAt},</if>
+        </trim>
+    </insert>
+
+    <sql id="ALL_COLUM">
+        id,name,role_id roleId,menu_id menuId,power,create_at createAt
+    </sql>
+
+    <select id="findMore" resultType="RoleMenu">
+        SELECT
+        <include refid="ALL_COLUM"/>
+        FROM cvd_role_menu
+    </select>
+
+    <select id="queryById" parameterType="integer" resultType="RoleMenu">
+        SELECT
+            crm.id,
+            crm.`name`,
+            crm.role_id roleId,
+            crm.menu_id menuId,
+            crm.power,
+            crm.create_at createAt,
+            cr.role_name
+        FROM
+            cvd_role_menu crm
+            LEFT JOIN cvd_role cr ON cr.id = crm.role_id
+        WHERE
+            crm.id = #{id}
+    </select>
+
+    <update id="updateModel" parameterType="RoleMenu">
+        update cvd_role_menu
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="roleId != null">role_id = #{roleId},</if>
+            <if test="menuId != null">menu_id = #{menuId},</if>
+            <if test="power != null">power = #{power},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE  FROM cvd_role_menu WHERE id = #{id}
+    </delete>
+</mapper>

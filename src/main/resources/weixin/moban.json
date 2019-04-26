@@ -1,0 +1,26 @@
+{
+  "touser":"OPENID",
+  "template_id":"TEMPID",
+  "data":{
+    "title": {
+      "value":"消费成功",
+      "color":"#173177"
+    },
+    "consume":{
+      "value":"就是花钱",
+      "color":"#173177"
+    },
+    "price": {
+      "value":"9999元",
+      "color":"#173177"
+    },
+    "time": {
+      "value":"2014年9月22日",
+      "color":"#173177"
+    },
+    "remark":{
+      "value":"欢迎继续消费！",
+      "color":"#173177"
+    }
+  }
+}

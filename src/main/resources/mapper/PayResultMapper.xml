@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cvd.chevdian.mapper.PayResultMapper">
+
+    <update id="updateCar" parameterType="java.util.Map">
+        UPDATE cbh_car
+        <set>
+            <if test="customerId != null">customerId = #{customerId,jdbcType=INTEGER},</if>
+            <if test="level != null">level=#{level,jdbcType=INTEGER},</if>
+            <if test="nameCarOwner != null and nameCarOwner != ''">nameCarOwner = #{nameCarOwner,jdbcType=VARCHAR},</if>
+            <if test="telCarOwner != null and telCarOwner != ''">telCarOwner = #{telCarOwner,jdbcType=VARCHAR},</if>
+            <if test="licensePlateNumber != null and licensePlateNumber != ''">licensePlateNumber =
+                #{licensePlateNumber,jdbcType=VARCHAR},
+            </if>
+            <if test="brand != null and brand != ''">brand = #{brand,jdbcType=VARCHAR},</if>
+            <if test="carType != null and carType != ''">carType = #{carType,jdbcType=VARCHAR},</if>
+            <if test="drvingCity != null and drvingCity != ''">drvingCity = #{drvingCity,jdbcType=VARCHAR},</if>
+            <if test="drivingLicense != null and drivingLicense != ''">drivingLicense =
+                #{drivingLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="secondDrivingLicense != null and secondDrivingLicense != ''">secondDrivingLicense =
+                #{secondDrivingLicense,jdbcType=VARCHAR},
+            </if>
+            <if test="carPhotos != null and carPhotos != ''">carPhotos = #{carPhotos,jdbcType=VARCHAR},</if>
+            <if test="VIN != null and VIN != ''">VIN = #{VIN,jdbcType=VARCHAR},</if>
+            <if test="amtCompensation != null">amtCompensation = #{amtCompensation,jdbcType=DECIMAL},</if>
+            <if test="amtCooperation != null">amtCooperation = #{amtCooperation,jdbcType=DECIMAL},</if>
+            <if test="typeGuarantee != null">typeGuarantee = #{typeGuarantee,jdbcType=INTEGER},</if>
+            <if test="timeBegin != null">timeBegin = #{timeBegin,jdbcType=DATE},</if>
+            <if test="timeEnd != null and timeEnd!=''">timeEnd = #{timeEnd,jdbcType=DATE},</if>
+            <if test="timeSignout != null">timeSignout = #{timeSignout,jdbcType=DATE},</if>
+            <if test="reasonFailure != null and reasonFailure != ''">reasonFailure =
+                #{reasonFailure,jdbcType=VARCHAR},
+            </if>
+            <if test="reasonSuccess != null and reasonSuccess != ''">reasonSuccess =
+                #{reasonSuccess,jdbcType=VARCHAR},
+            </if>
+            <if test="failureNum != null">failureNum = #{failureNum,jdbcType=INTEGER},</if>
+            <if test="status != null">status = #{status,jdbcType=INTEGER},</if>
+            <if test="createAt != null">createAt = #{createAt,jdbcType=DATE},</if>
+            <if test="engineNum != null and engineNum != ''">engineNum = #{engineNum,jdbcType=VARCHAR},</if>
+            <if test="model != null and model != ''">model = #{model,jdbcType=VARCHAR},</if>
+            <if test="registerDate != null and registerDate != ''">registerDate = #{registerDate,jdbcType=VARCHAR},</if>
+            <if test="issueDate != null and issueDate != ''">issueDate = #{issueDate,jdbcType=VARCHAR},</if>
+            <if test="timeExamine != null">timeExamine = #{timeExamine,jdbcType=DATE},</if>
+            <if test="payTime != null">payTime = #{payTime,jdbcType=DATE},</if>
+            <if test="observationEndTime != null">observationEndTime = #{observationEndTime,jdbcType=DATE},</if>
+            <if test="messageFlag != null">messageFlag = #{messageFlag,jdbcType=INTEGER},</if>
+            <if test="signoutMessageFlag != null">signoutMessageFlag = #{signoutMessageFlag,jdbcType=INTEGER},</if>
+            <if test="reJoinNum != null">reJoinNum = reJoinNum + 1,</if>
+            <if test="cityId != null">cityId = #{cityId},</if>
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findCarByRecordRechargeId" resultType="map">
+        SELECT u.openId,c.*,r.amt,r.cashAmt,r.`status` rStatus FROM cbh_record_recharge r
+        LEFT JOIN cbh_car c ON c.id = r.carId
+        LEFT JOIN cbh_user_customer u ON u.id = c.customerId
+        WHERE r.id =#{id}
+    </select>
+
+    <select id="findUser" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT c.id carId,c.licensePlateNumber,c.model,c.amtCooperation,c.amtCooperation,u.id,u.customerUN,u.customerPN,u.customerPW,u.wechat,
+        u.portrait,u.nickname,u.sex,u.birthday,u.area,u.timeLogin,u.loginErrorNum,u.timeLockover,
+        u.typeLock,u.typeUser,u.status,u.timeJoin,u.token,DATE_FORMAT(u.tokenaging,'%Y-%m-%d %T') tokenaging,u.androidDeviceId,u.iosDeviceId,
+        u.openId,u.source
+        FROM cbh_user_customer u
+        LEFT JOIN cbh_car c on c.customerId=u.id
+        WHERE 1=1
+        <if test="id != null and id != ''"> and u.id = #{id}</if>
+        <if test="carId != null and carId != ''"> and c.id = #{carId}</if>
+        <if test="customerPN != null and customerPN != ''"> and u.customerPN = #{customerPN}</if>
+        <if test="licensePlateNumber != null and licensePlateNumber != ''"> and c.licensePlateNumber = #{licensePlateNumber}</if>
+        LIMIT 1
+    </select>
+
+    <insert id="saveUserCustomerLog" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        insert into cbh_user_customer_log
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="customerId != null" >customerId,</if>
+            <if test="customerPN != null" >customerPN,</if>
+            <if test="source != null" >source,</if>
+            <if test="createAt != null" >createAt,</if>
+            <if test="currentStatus != null" >currentStatus,</if>
+            <if test="optTime != null" >optTime,</if>
+            <if test="optType != null" >optType,</if>
+            <if test="optDesc != null" >optDesc,</if>
+            <if test="recordTime != null" >recordTime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="customerId != null" >#{customerId,jdbcType=INTEGER},</if>
+            <if test="customerPN != null" >#{customerPN,jdbcType=VARCHAR},</if>
+            <if test="source != null" >#{source,jdbcType=VARCHAR},</if>
+            <if test="createAt != null" >#{createAt,jdbcType=TIMESTAMP},</if>
+            <if test="currentStatus != null" >#{currentStatus,jdbcType=INTEGER},</if>
+            <if test="optTime != null" >#{optTime,jdbcType=TIMESTAMP},</if>
+            <if test="optType != null" >#{optType,jdbcType=INTEGER},</if>
+            <if test="optDesc != null" >#{optDesc,jdbcType=VARCHAR},</if>
+            <if test="recordTime != null" >#{recordTime,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+
+    <select id="selectUserByCarId" resultType="java.util.Map" parameterType="java.util.Map">
+        SELECT u.* FROM cbh_user_customer u
+        LEFT JOIN cbh_car c on c.customerId = u.id
+        WHERE c.id = #{id}
+    </select>
+
+    <select id="findEntitySingle" resultType="map">
+        SELECT id,amtTotal,amtBalance,amtPaid,allowance,realPaid,showTotal,showCustomer,showCar,versions, payNum,eventNum,createAt FROM cbh_foundation
+        WHERE id = 1
+    </select>
+
+    <update id="updateData" parameterType="java.util.Map">
+        UPDATE cbh_foundation
+        <set>
+            <if test="amtTotal != null and amtTotal != ''">amtTotal = #{amtTotal},</if>
+            <if test="amtBalance != null">amtBalance = #{amtBalance},</if>
+            <if test="amtPaid != null and amtPaid != ''">amtPaid = #{amtPaid},</if>
+            <if test="realPaid != null and realPaid != ''">realPaid = #{realPaid},</if>
+            <if test="allowance != null and allowance != ''">allowance = #{allowance},</if>
+            <if test="showTotal != null and showTotal != ''">showTotal = #{showTotal},</if>
+            <if test="showCustomer != null and showCustomer != ''">showCustomer = #{showCustomer},</if>
+            <if test="showCar != null and showCar != ''">showCar = #{showCar},</if>
+            <if test="payNum != null and payNum != ''">payNum = #{payNum},</if>
+            <if test="eventNum != null and eventNum != ''">eventNum = #{eventNum},</if>
+            <if test="versions != null and versions != ''">versions = #{versions}+1,</if>
+        </set>
+        where versions=#{versions}
+        <if test="id != null and id != ''">AND id = #{id}</if>
+    </update>
+
+    <select id="findDictionarySingle" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM dd_dictionary
+        WHERE 1 = 1
+        <if test="type != null and type != ''"> and type = #{type,jdbcType=VARCHAR}</if>
+    </select>
+
+    <select id="findMore" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT * FROM cbh_wechat_login
+        WHERE 1 = 1
+        <if test="day != null and day != ''"> AND day = #{day,jdbcType=VARCHAR}</if>
+    </select>
+
+    <insert id="wechatLoginSaveSingle" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        insert into cbh_wechat_login
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="day != null">day,</if>
+            <if test="number != null">number,</if>
+            <if test="initNum != null">initNum,</if>
+            <if test="payNum != null">payNum,</if>
+            <if test="examineNum != null">examineNum,</if>
+            <if test="notPassNum != null">notPassNum,</if>
+            <if test="observationNum != null">observationNum,</if>
+            <if test="guaranteeNum != null">guaranteeNum,</if>
+            <if test="outNum != null">outNum,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="day != null and day != ''">#{day,jdbcType=VARCHAR},</if>
+            <if test="number != null">#{number,jdbcType=INTEGER},</if>
+            <if test="initNum != null">#{initNum,jdbcType=INTEGER},</if>
+            <if test="payNum != null">#{payNum,jdbcType=INTEGER},</if>
+            <if test="examineNum != null">#{examineNum,jdbcType=INTEGER},</if>
+            <if test="notPassNum != null">#{notPassNum,jdbcType=INTEGER},</if>
+            <if test="observationNum != null">#{observationNum,jdbcType=INTEGER},</if>
+            <if test="guaranteeNum != null">#{guaranteeNum,jdbcType=INTEGER},</if>
+            <if test="outNum != null">#{outNum,jdbcType=INTEGER},</if>
+        </trim>
+    </insert>
+
+    <update id="wechatLoginUpdateModel" parameterType="java.util.Map">
+        UPDATE cbh_wechat_login
+        <set>
+            <if test="number != null">number = #{number,jdbcType=INTEGER},</if>
+            <if test="day != null and day != ''">day = #{day,jdbcType=VARCHAR},</if>
+            <if test="initNum != null">initNum=#{initNum,jdbcType=INTEGER},</if>
+            <if test="payNum != null">payNum=#{payNum,jdbcType=INTEGER},</if>
+            <if test="examineNum != null">examineNum=#{examineNum,jdbcType=INTEGER},</if>
+            <if test="notPassNum != null">notPassNum=#{notPassNum,jdbcType=INTEGER},</if>
+            <if test="observationNum != null">observationNum=#{observationNum,jdbcType=INTEGER},</if>
+            <if test="guaranteeNum != null">guaranteeNum=#{guaranteeNum,jdbcType=INTEGER},</if>
+            <if test="outNum != null">outNum=#{outNum,jdbcType=INTEGER},</if>
+
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="findCar" parameterType="java.util.Map" resultType="java.util.Map">
+        select * from cbh_car c where c.id = #{id}
+    </select>
+
+    <select id="getUserInfoById" resultType="java.util.Map">
+        SELECT
+        c.id,
+        c.openId,
+        c.customerPN,
+        c.nickname,
+        c.portrait,
+        c.headPortrait,
+        c.cashAccount,
+        c.cashTotal,
+        c.level
+        FROM
+        cbh_user_customer c
+        WHERE
+        c.id = #{customerId}
+    </select>
+
+    <update id="userUpdateModel" parameterType="java.util.Map">
+        UPDATE cbh_user_customer
+        <set>
+            <if test="maintenanceshopId != null">maintenanceshopId = #{maintenanceshopId,jdbcType=INTEGER},</if>
+            <if test="customerUN != null">customerUN=#{customerUN,jdbcType=VARCHAR},</if>
+            <if test="customerPN != null">customerPN=#{customerPN,jdbcType=VARCHAR},</if>
+            <if test="customerPW != null">customerPW=#{customerPW,jdbcType=VARCHAR},</if>
+            <if test="source != null">source=#{source,jdbcType=VARCHAR},</if>
+            <if test="wechat != null">wechat=#{wechat,jdbcType=VARCHAR},</if>
+            <if test="portrait != null">portrait=#{portrait,jdbcType=VARCHAR},</if>
+            <if test="nickname != null">nickname=#{nickname,jdbcType=VARCHAR},</if>
+            <if test="sex != null">sex=#{sex,jdbcType=INTEGER},</if>
+            <if test="birthday != null">birthday=#{birthday,jdbcType=DATE},</if>
+            <if test="area != null and area != ''">area=#{area,jdbcType=VARCHAR},</if>
+            <if test="timeLogin != null">timeLogin=#{timeLogin,jdbcType=DATE},</if>
+            <if test="loginErrorNum != null">loginErrorNum=#{loginErrorNum,jdbcType=INTEGER},</if>
+            <if test="timeLockover != null">timeLockover=#{timeLockover,jdbcType=DATE},</if>
+            <if test="typeLock != null">typeLock=#{typeLock,jdbcType=INTEGER},</if>
+            <if test="typeUser != null">typeUser=#{typeUser,jdbcType=INTEGER},</if>
+            <if test="status != null">status=#{status,jdbcType=INTEGER},</if>
+            <if test="timeJoin != null">timeJoin=#{timeJoin,jdbcType=DATE},</if>
+            <if test="token != null">token=#{token,jdbcType=VARCHAR},</if>
+            <if test="tokenaging != null">tokenaging=#{tokenaging,jdbcType=DATE},</if>
+            <if test="androidDeviceId != null">androidDeviceId=#{androidDeviceId,jdbcType=VARCHAR},</if>
+            <if test="iosDeviceId != null">iosDeviceId=#{iosDeviceId,jdbcType=VARCHAR},</if>
+            <if test="openId != null">openId=#{openId,jdbcType=VARCHAR},</if>
+            <if test="cashAccount != null and cashReward!=null">cashAccount=cashAccount+#{cashReward},</if>
+            <if test="cashTotal != null and cashTotal!=null">cashTotal=cashTotal+#{cashReward},</if>
+            <if test="level != null ">level = #{level},</if>
+        </set>
+        WHERE id = #{id,jdbcType=INTEGER}
+        <if test="cashAccount != null">
+            AND cashAccount = #{cashAccount}
+        </if>
+        <if test="cashTotal != null">
+            AND cashTotal = #{cashTotal}
+        </if>
+    </update>
+
+
+</mapper>
